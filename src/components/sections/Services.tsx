@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import {
   BroomIcon,
   DropIcon,
@@ -33,6 +34,12 @@ const hausmeister: Item[] = [
   { icon: TrashIcon, label: "Müllservice" },
   { icon: LightbulbIcon, label: "Beleuchtung" },
 ];
+
+// Photo slots. The SVGs in public/images/ are placeholders: save your own photos as
+// public/images/leistungen-<name>.jpg (same names) and set PHOTO_EXT to "jpg".
+// Landscape 3:2, at least 1600 px wide; next/image takes care of resizing.
+const PHOTO_EXT = "svg";
+const photo = (name: string) => `/images/leistungen-${name}.${PHOTO_EXT}`;
 
 // Needle angle in degrees at rest. The gauge reads "warm, everything in range".
 const NEEDLE_END = 38;
@@ -93,11 +100,18 @@ export function Services() {
           {/* A: Haustechnik */}
           <Card className="md:col-span-2 md:row-span-2" dark>
             <div className="flex h-full flex-col">
+              <Photo
+                src={photo("haustechnik")}
+                alt="Heizungsrohre und Manometer im Technikraum eines Mehrfamilienhauses"
+                sizes="(min-width: 1280px) 600px, (min-width: 768px) 48vw, 100vw"
+                className="aspect-[16/7]"
+                dark
+              />
               <CardHead icon={WrenchIcon} title="Haustechnik" dark>
                 Wartung und kleine Reparaturen, bevor aus einem Tropfen ein Wasserschaden wird.
               </CardHead>
               <div className="relative my-8 flex flex-1 items-center justify-center overflow-hidden">
-                <div className="w-full max-w-sm transition-transform duration-700 ease-spring group-hover:scale-105">
+                <div className="w-full max-w-[17rem] transition-transform duration-700 ease-spring group-hover:scale-105">
                   <GaugeIllustration />
                 </div>
               </div>
@@ -107,6 +121,12 @@ export function Services() {
 
           {/* B: Hausmeisterservice */}
           <Card className="md:col-span-2">
+            <Photo
+              src={photo("hausmeisterservice")}
+              alt="Gepflegte Mehrfamilienhäuser mit sauberem Eingangsbereich"
+              sizes="(min-width: 1280px) 600px, (min-width: 768px) 48vw, 100vw"
+              className="aspect-[16/7]"
+            />
             <CardHead icon={HouseLineIcon} title="Hausmeisterservice">
               Regelmäßige Rundgänge, kurze Wege, ein Gesicht, das Ihre Mieter kennen.
             </CardHead>
@@ -115,6 +135,12 @@ export function Services() {
 
           {/* C: Grünpflege */}
           <Card>
+            <Photo
+              src={photo("gruenpflege")}
+              alt="Geschnittene Hecken und gemähter Rasen einer Wohnanlage"
+              sizes="(min-width: 1280px) 300px, (min-width: 768px) 24vw, 100vw"
+              className="aspect-[3/2]"
+            />
             <CardHead icon={PlantIcon} title="Grünpflege">
               Rasen, Hecken, Beete und Laub. Der Außenbereich bleibt gepflegt, Saison für Saison.
             </CardHead>
@@ -122,6 +148,12 @@ export function Services() {
 
           {/* D: Winterdienst */}
           <Card>
+            <Photo
+              src={photo("winterdienst")}
+              alt="Geräumter und gestreuter Gehweg im Winter"
+              sizes="(min-width: 1280px) 300px, (min-width: 768px) 24vw, 100vw"
+              className="aspect-[3/2]"
+            />
             <CardHead icon={SnowflakeIcon} title="Winterdienst">
               Räum- und Streupflicht dokumentiert, mit Uhrzeit und Einsatzprotokoll für Ihre Haftung.
             </CardHead>
@@ -147,6 +179,35 @@ function Card({ children, className = "", dark }: { children: React.ReactNode; c
         {children}
       </div>
     </article>
+  );
+}
+
+// Pulls the image out to the inner core's edge so it sits flush with the concentric radius.
+function Photo({
+  src,
+  alt,
+  sizes,
+  className,
+  dark,
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+  className: string;
+  dark?: boolean;
+}) {
+  return (
+    <div
+      className={`relative -mx-4 -mt-4 mb-8 overflow-hidden rounded-[calc(1.75rem-0.375rem-0.75rem)] md:-mx-6 md:-mt-6 ${dark ? "bg-white/5" : "bg-concrete"} ${className}`}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        className="object-cover transition-transform duration-1000 ease-spring group-hover:scale-[1.03]"
+      />
+    </div>
   );
 }
 

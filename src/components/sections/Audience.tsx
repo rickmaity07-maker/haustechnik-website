@@ -59,7 +59,9 @@ export function Audience() {
   );
 
   return (
-    <section id="fuer-wen" ref={root} className="relative overflow-hidden bg-night py-32 text-white md:py-48">
+    // Seasons follows directly on the same night background, so the bottom padding is halved
+    // and Seasons drops most of its top padding: the two read as one continuous dark band.
+    <section id="fuer-wen" ref={root} className="relative overflow-hidden bg-night pt-32 pb-12 text-white md:pt-48 md:pb-16">
       <div aria-hidden className="pointer-events-none absolute top-1/3 left-[-10%] h-[40vh] w-[50vw] rounded-full bg-workblue/40 blur-[120px]" />
 
       <div className="relative mx-auto max-w-7xl px-4 md:px-8">
@@ -85,7 +87,7 @@ export function Audience() {
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
                 onClick={() => setActive(i)}
-                className={`aud-reveal group relative min-w-[5.5rem] basis-0 overflow-hidden rounded-[1.75rem] p-1.5 text-left ring-1 transition-[flex-grow,background-color] duration-700 ease-spring ${
+                className={`aud-reveal group relative min-w-[5.5rem] basis-0 overflow-hidden rounded-[1.75rem] p-1.5 text-left ring-1 transition-[flex-grow,background-color,scale] duration-700 ease-spring active:scale-[0.98] ${
                   open ? "grow-[5] bg-white/8 ring-white/15" : "grow bg-white/4 ring-white/10 hover:bg-white/6"
                 }`}
               >

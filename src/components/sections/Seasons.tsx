@@ -92,7 +92,7 @@ export function Seasons() {
   );
 
   return (
-    <section id="jahreskreis" ref={root} className="relative isolate bg-night py-32 text-white md:py-48">
+    <section id="jahreskreis" ref={root} className="relative isolate bg-night pt-20 pb-32 text-white md:pt-28 md:pb-48">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-[10%] left-[-10%] h-[50vh] w-[50vw] rounded-full bg-workblue/40 blur-[120px]" />
       </div>
