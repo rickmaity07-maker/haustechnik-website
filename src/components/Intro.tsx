@@ -10,15 +10,15 @@ const easeInOut = "cubic-bezier(.76,0,.24,1)";
 
 // The whole sequence is CSS, injected before first paint by the boot script below, so it
 // plays even while JavaScript is still loading (slow phones, dev mode). JavaScript only adds
-// skipping and removes the overlay at the end. Total: about 2.4 s.
+// skipping and removes the overlay at the end. Total: about 4.5 s (name fully readable from about 1.6 s to 3.6 s).
 const playCss = [
-  `#intro{display:flex;animation:intro-exit .7s ${easeInOut} 2.1s forwards}`,
+  `#intro{display:flex;animation:intro-exit .9s ${easeInOut} 3.6s forwards}`,
   `#intro.intro-skip{animation:intro-exit .5s ${easeInOut} 0s forwards}`,
-  `#intro .intro-roof{animation:intro-draw .8s ${ease} .1s forwards}`,
-  `#intro .intro-wrench{animation:intro-pop .5s ${ease} .55s forwards}`,
-  `#intro .intro-letter{animation:intro-rise .8s ${ease} forwards;animation-delay:calc(.45s + var(--i) * 45ms)}`,
-  `#intro .intro-tagline{animation:intro-up .6s ${ease} 1s forwards}`,
-  `#intro .intro-line{animation:intro-grow .9s ${easeInOut} 1.05s forwards}`,
+  `#intro .intro-roof{animation:intro-draw 1.1s ${ease} .2s forwards}`,
+  `#intro .intro-wrench{animation:intro-pop .7s ${ease} .9s forwards}`,
+  `#intro .intro-letter{animation:intro-rise 1s ${ease} forwards;animation-delay:calc(.8s + var(--i) * 70ms)}`,
+  `#intro .intro-tagline{animation:intro-up .8s ${ease} 1.7s forwards}`,
+  `#intro .intro-line{animation:intro-grow 1.6s ${easeInOut} 1.8s forwards}`,
   "@keyframes intro-draw{to{stroke-dashoffset:0}}",
   "@keyframes intro-pop{to{opacity:1;transform:none}}",
   "@keyframes intro-rise{to{transform:none}}",
