@@ -61,7 +61,7 @@ export function Audience() {
   return (
     // Seasons follows directly on the same night background, so the bottom padding is halved
     // and Seasons drops most of its top padding: the two read as one continuous dark band.
-    <section id="fuer-wen" ref={root} className="relative overflow-hidden bg-night pt-32 pb-12 text-white md:pt-48 md:pb-16">
+    <section id="fuer-wen" ref={root} className="relative overflow-hidden bg-night pt-20 pb-12 text-white md:pt-28 md:pb-16">
       <div aria-hidden className="pointer-events-none absolute top-1/3 left-[-10%] h-[40vh] w-[50vw] rounded-full bg-workblue/40 blur-[120px]" />
 
       <div className="relative mx-auto max-w-7xl px-4 md:px-8">
@@ -76,7 +76,7 @@ export function Audience() {
         </div>
 
         {/* Desktop: horizontal accordion */}
-        <div className="mt-16 hidden h-[30rem] gap-3 md:mt-20 md:flex">
+        <div className="mt-10 hidden h-[30rem] gap-3 md:mt-14 md:flex">
           {clients.map((c, i) => {
             const open = active === i;
             return (
@@ -124,7 +124,7 @@ export function Audience() {
         </div>
 
         {/* Mobile: stacked list, everything open */}
-        <ul className="mt-16 flex flex-col gap-3 md:hidden">
+        <ul className="mt-10 flex flex-col gap-3 md:hidden">
           {clients.map((c) => (
             <li key={c.id} className="aud-reveal rounded-[1.75rem] bg-white/5 p-1.5 ring-1 ring-white/10">
               <div className="rounded-[calc(1.75rem-0.375rem)] bg-night/60 p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)]">

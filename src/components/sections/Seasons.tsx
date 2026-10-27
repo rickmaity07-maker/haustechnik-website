@@ -92,7 +92,7 @@ export function Seasons() {
   );
 
   return (
-    <section id="jahreskreis" ref={root} className="relative isolate bg-night pt-20 pb-32 text-white md:pt-28 md:pb-48">
+    <section id="jahreskreis" ref={root} className="relative isolate bg-night pt-8 pb-20 text-white md:pt-12 md:pb-28">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-[10%] left-[-10%] h-[50vh] w-[50vw] rounded-full bg-workblue/40 blur-[120px]" />
       </div>
@@ -108,7 +108,7 @@ export function Seasons() {
           </p>
         </div>
 
-        <div className="mt-16 space-y-8 md:mt-24">
+        <div className="mt-10 space-y-6 md:mt-14">
           {seasons.map((s, i) => (
             <article key={s.name} className="season-card relative" style={{ zIndex: i + 1 }}>
               <div
@@ -116,7 +116,7 @@ export function Seasons() {
                 style={{ backgroundColor: `color-mix(in srgb, ${s.tint} 10%, var(--night))` }}
               >
                 <div
-                  className="relative grid gap-8 overflow-hidden rounded-[calc(1.75rem-0.375rem)] p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] md:min-h-[28rem] md:grid-cols-[1.2fr_1fr] md:p-12"
+                  className="relative grid gap-8 overflow-hidden rounded-[calc(1.75rem-0.375rem)] p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] md:grid-cols-[1.2fr_1fr] md:p-10"
                   style={{
                     backgroundColor: `color-mix(in srgb, ${s.tint} 14%, #13213a)`,
                     backgroundImage: `radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, ${s.tint} 22%, transparent), transparent 60%)`,

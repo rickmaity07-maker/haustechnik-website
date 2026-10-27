@@ -45,45 +45,50 @@ export function KeyFacts({ years }: { years: number }) {
           stagger: 0.1,
           scrollTrigger: { trigger: ".kf-grid", start: "top 85%", once: true },
         });
+
+        gsap.from(".kf-bar", {
+          scaleX: 0,
+          duration: 0.9,
+          ease: "expo.out",
+          stagger: 0.1,
+          delay: 0.4,
+          scrollTrigger: { trigger: ".kf-grid", start: "top 85%", once: true },
+        });
       });
     },
     { scope: root },
   );
 
   return (
-    <section ref={root} aria-labelledby="kf-title" className="bg-paper pb-24 text-night md:pb-32">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 md:grid-cols-12 md:gap-8 md:px-8">
-        <div className="md:col-span-4">
-          <h2 id="kf-title" className="text-2xl leading-tight font-medium tracking-[-0.02em] text-balance md:text-3xl">
+    <section ref={root} aria-labelledby="kf-title" className="bg-paper py-14 text-night md:py-20">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <div className="flex items-center gap-5">
+          <h2 id="kf-title" className="shrink-0 text-base font-medium text-night/70">
             {site.name} in Zahlen
           </h2>
-          <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-night/60">
-            Verlässlichkeit lässt sich messen. Diese Werte stehen hinter jedem Haus, das wir betreuen.
-          </p>
+          <span aria-hidden className="h-px flex-1 bg-night/10" />
         </div>
 
-        <dl className="kf-grid grid grid-cols-1 border-t border-night/10 sm:grid-cols-[1.35fr_1fr] md:col-span-8">
+        {/* One row from md up, 2x2 below. Dividers are borders, so no column is ever left empty. */}
+        <dl className="kf-grid mt-8 grid grid-cols-2 md:mt-10 md:grid-cols-4">
           {facts.map((fact, i) => {
             const value = fact.value === "founded" ? years : fact.value;
             return (
               <div
                 key={fact.label}
-                className={`kf-item flex flex-col-reverse gap-2 border-b border-night/10 py-8 sm:py-10 ${
-                  i % 2 === 1 ? "sm:border-l sm:pl-10" : "sm:pr-10"
-                } ${i === 0 ? "sm:pt-12" : ""}`}
+                className={`kf-item flex min-w-0 flex-col-reverse border-night/10 md:px-8 md:pt-0 md:first:pl-0 md:last:pr-0 ${
+                  i % 2 === 1 ? "border-l pl-5" : "pr-5"
+                } ${i >= 2 ? "mt-8 border-t pt-8 md:mt-0 md:border-t-0" : ""} ${i === 2 ? "md:border-l" : ""}`}
               >
-                <dt className="text-[15px] text-night/60">{fact.label}</dt>
-                <dd
-                  className={`font-medium tracking-[-0.04em] tabular-nums ${
-                    i === 0 ? "text-[clamp(3.5rem,8vw,6.5rem)] leading-[0.9]" : "text-[clamp(2.75rem,5vw,4.25rem)] leading-none"
-                  }`}
-                >
+                <dt className="mt-4 text-sm leading-snug text-night/60 md:text-[15px]">{fact.label}</dt>
+                <dd className="text-[clamp(2.25rem,4.6vw,3.75rem)] leading-none font-medium tracking-[-0.04em] whitespace-nowrap tabular-nums">
                   {fact.prefix && <span className="text-[0.45em] tracking-normal text-night/55">{fact.prefix}</span>}
                   {/* Limits like "unter 60 Min." stay static: counting up from 0 reads oddly. */}
                   <span className={fact.prefix ? undefined : "kf-num"} data-value={value}>
                     {format(value)}
                   </span>
                   {fact.suffix && <span className="text-[0.45em] tracking-normal text-workblue">{fact.suffix}</span>}
+                  <span aria-hidden className="kf-bar mt-4 block h-0.5 w-8 origin-left bg-signal" />
                 </dd>
               </div>
             );
