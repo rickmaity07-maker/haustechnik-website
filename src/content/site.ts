@@ -25,6 +25,7 @@ export const nav = [
   { label: "Für wen", href: "#fuer-wen" },
   { label: "Ablauf", href: "#ablauf" },
   { label: "Preise", href: "#preise" },
+  { label: "Einsatzgebiet", href: "#einsatzgebiet" },
   { label: "FAQ", href: "#faq" },
   { label: "Kontakt", href: "#kontakt" },
 ] as const;
