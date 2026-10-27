@@ -129,17 +129,17 @@ export function Contact() {
 
           <dl className="mt-12 space-y-6">
             <ContactRow Icon={PhoneIcon} label="Telefon">
-              <a href={site.phoneHref} className="hover:text-workblue">
+              <a href={site.phoneHref} className={linkClass}>
                 {site.phone}
               </a>
             </ContactRow>
             <ContactRow Icon={SirenIcon} label="24h Notdienst">
-              <a href={site.emergencyPhoneHref} className="hover:text-workblue">
+              <a href={site.emergencyPhoneHref} className={linkClass}>
                 {site.emergencyPhone}
               </a>
             </ContactRow>
             <ContactRow Icon={EnvelopeSimpleIcon} label="E-Mail">
-              <a href={`mailto:${site.email}`} className="break-all hover:text-workblue">
+              <a href={`mailto:${site.email}`} className={`${linkClass} break-all`}>
                 {site.email}
               </a>
             </ContactRow>
@@ -188,7 +188,7 @@ export function Contact() {
                 </p>
                 <p className="mt-3 text-night/60">
                   Eilt es? Rufen Sie uns an unter{" "}
-                  <a href={site.phoneHref} className="text-night underline decoration-signal decoration-2 underline-offset-4">
+                  <a href={site.phoneHref} className="text-night underline decoration-signal decoration-2 underline-offset-4 transition-colors duration-300 hover:text-workblue">
                     {site.phone}
                   </a>
                   .
@@ -288,7 +288,7 @@ export function Contact() {
                       return (
                         <label
                           key={s}
-                          className={`relative cursor-pointer rounded-full px-4 py-2.5 text-sm ring-1 transition-colors duration-300 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-signal ${checked ? "bg-night text-white ring-night" : "bg-paper text-night/80 ring-night/15 hover:ring-night/40"}`}
+                          className={`relative cursor-pointer rounded-full px-4 py-2.5 text-sm ring-1 transition-[color,background-color,box-shadow,scale] duration-300 active:scale-[0.98] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-signal ${checked ? "bg-night text-white ring-night" : "bg-paper text-night/80 ring-night/15 hover:ring-night/40"}`}
                         >
                           <input
                             type="checkbox"
@@ -329,7 +329,7 @@ export function Contact() {
                     />
                     <span>
                       Ich habe die{" "}
-                      <Link href="/datenschutz" className="text-night underline decoration-signal decoration-2 underline-offset-4">
+                      <Link href="/datenschutz" className="text-night underline decoration-signal decoration-2 underline-offset-4 transition-colors duration-300 hover:text-workblue">
                         Datenschutzerklärung
                       </Link>{" "}
                       gelesen und bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage gespeichert werden.
@@ -341,7 +341,7 @@ export function Contact() {
                 <div className="md:col-span-2">
                   <button
                     type="submit"
-                    className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-night py-2 pr-2 pl-6 text-base font-medium text-white transition-transform duration-500 ease-spring active:scale-[0.97] sm:w-auto"
+                    className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-night py-2 pr-2 pl-6 text-base font-medium text-white transition-[background-color,scale] duration-500 ease-spring hover:bg-workblue active:scale-[0.98] sm:w-auto"
                   >
                     <span>Anfrage senden</span>
                     <span className="flex size-10 items-center justify-center rounded-full bg-signal text-night transition-transform duration-500 ease-spring group-hover:translate-x-0.5 group-hover:scale-105">
@@ -359,6 +359,8 @@ export function Contact() {
     </section>
   );
 }
+
+const linkClass = "inline-block transition-[color,scale] duration-300 hover:text-workblue active:scale-[0.98]";
 
 function inputClass(invalid: boolean) {
   return `block w-full rounded-2xl bg-paper px-4 py-3.5 text-base text-night ring-1 transition-shadow duration-300 placeholder:text-night/35 focus:ring-2 focus:outline-none ${invalid ? "ring-red-700/60 focus:ring-red-700" : "ring-night/12 focus:ring-workblue"}`;

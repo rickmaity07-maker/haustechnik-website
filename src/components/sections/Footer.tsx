@@ -9,6 +9,9 @@ async function CurrentYear() {
   return <>{new Date().getFullYear()}</>;
 }
 
+const footerLink =
+  "justify-self-start text-white/70 transition-[color,scale] duration-300 hover:text-white active:scale-[0.98]";
+
 export function Footer() {
   return (
     <footer className="relative isolate overflow-hidden bg-night text-white">
@@ -27,7 +30,7 @@ export function Footer() {
           <ArrowButton href="#kontakt">Angebot anfragen</ArrowButton>
           <a
             href={site.phoneHref}
-            className="inline-flex items-center gap-3 rounded-full px-6 py-4 text-base text-white/85 ring-1 ring-white/20 transition-colors duration-300 hover:bg-white/10"
+            className="inline-flex items-center gap-3 rounded-full px-6 py-4 text-base text-white/85 ring-1 ring-white/20 transition-[background-color,scale] duration-300 ease-spring hover:bg-white/10 active:scale-[0.98]"
           >
             <PhoneIcon size={18} weight="light" aria-hidden />
             {site.phone}
@@ -39,7 +42,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex flex-col gap-10 border-t border-white/10 py-10 md:flex-row md:items-start md:justify-between">
           <div>
-            <Link href="/#top" className="flex items-center gap-2.5 text-lg font-semibold tracking-tight">
+            <Link href="/#top" className="inline-flex items-center gap-2.5 rounded-full text-lg font-semibold tracking-tight transition-[opacity,scale] duration-300 hover:opacity-80 active:scale-[0.98]">
               <Logo />
               <span>{site.name}</span>
             </Link>
@@ -50,14 +53,14 @@ export function Footer() {
 
           <nav aria-label="Fußzeile" className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm sm:grid-cols-3">
             {nav.map((item) => (
-              <Link key={item.href} href={`/${item.href}`} className="text-white/70 transition-colors duration-300 hover:text-white">
+              <Link key={item.href} href={`/${item.href}`} className={footerLink}>
                 {item.label}
               </Link>
             ))}
-            <Link href="/impressum" className="text-white/70 transition-colors duration-300 hover:text-white">
+            <Link href="/impressum" className={footerLink}>
               Impressum
             </Link>
-            <Link href="/datenschutz" className="text-white/70 transition-colors duration-300 hover:text-white">
+            <Link href="/datenschutz" className={footerLink}>
               Datenschutz
             </Link>
           </nav>

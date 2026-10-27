@@ -83,8 +83,10 @@ export function Process() {
   );
 
   return (
-    <section id="ablauf" ref={root} className="bg-concrete py-32 md:py-48">
-      <div className="process-grid mx-auto grid max-w-6xl gap-14 px-4 md:grid-cols-2 md:gap-20">
+    // Step cards are compact on desktop so the scrolling column stays roughly as tall as the
+    // pinned one: the pin range is short and neither side leaves a large empty area.
+    <section id="ablauf" ref={root} className="bg-concrete py-32 md:py-40">
+      <div className="process-grid mx-auto grid max-w-6xl gap-14 px-4 md:grid-cols-[1fr_1.15fr] md:gap-16">
         <div className="process-left self-start">
           <p className="text-sm font-medium text-workblue">Ablauf</p>
           <h2 className="mt-4 text-4xl leading-[1.05] font-medium tracking-[-0.03em] text-night md:text-6xl">
@@ -93,34 +95,35 @@ export function Process() {
           <p className="mt-6 max-w-sm text-lg leading-relaxed text-night/65">
             Von der ersten Nachricht bis zum ersten Rundgang vergehen in der Regel zwei bis drei Wochen. Fragen
             beantworten wir direkt unter{" "}
-            <a href={site.phoneHref} className="whitespace-nowrap text-night underline decoration-signal decoration-2 underline-offset-4">
+            <a
+              href={site.phoneHref}
+              className="inline-block whitespace-nowrap text-night underline decoration-signal decoration-2 underline-offset-4 transition-[color,scale] duration-300 hover:text-workblue active:scale-[0.98]"
+            >
               {site.phone}
             </a>
             .
           </p>
 
-          <div aria-hidden className="relative mt-14 hidden h-56 w-px bg-night/15 md:block">
+          <div aria-hidden className="relative mt-12 hidden h-[min(34vh,16rem)] w-px bg-night/15 md:block">
             <div className="process-fill absolute inset-0 origin-top bg-workblue" />
             <div className="absolute -left-[3px] top-0 size-[7px] rounded-full bg-workblue" />
           </div>
         </div>
 
-        <ol className="space-y-6 md:space-y-10">
+        <ol className="space-y-4 md:space-y-5">
           {steps.map((step, i) => (
             <li key={step.title} className="process-step">
               <div className="rounded-[1.75rem] bg-night/[0.03] p-1.5 ring-1 ring-night/10">
-                <div className="flex flex-col rounded-[calc(1.75rem-0.375rem)] bg-paper p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_24px_48px_-32px_rgba(15,27,45,0.35)] md:min-h-[26rem] md:p-10">
+                <div className="flex flex-col rounded-[calc(1.75rem-0.375rem)] bg-paper p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_24px_48px_-32px_rgba(15,27,45,0.35)] md:p-9">
                   <div className="flex items-center justify-between">
-                    <span className="text-6xl leading-none font-medium tracking-[-0.04em] text-night/15 tabular-nums md:text-7xl">
+                    <span className="text-5xl leading-none font-medium tracking-[-0.04em] text-night/15 tabular-nums md:text-6xl">
                       {i + 1}
                     </span>
                     <span className="flex size-12 items-center justify-center rounded-full bg-night text-signal">
                       <step.Icon size={22} weight="light" aria-hidden />
                     </span>
                   </div>
-                  <h3 className="mt-10 text-2xl font-medium tracking-tight text-night md:mt-auto md:text-3xl">
-                    {step.title}
-                  </h3>
+                  <h3 className="mt-6 text-2xl font-medium tracking-tight text-night md:text-[1.75rem]">{step.title}</h3>
                   <p className="mt-3 text-base leading-relaxed text-night/65 md:text-lg">{step.text}</p>
                   <p className="mt-6 inline-flex self-start rounded-full bg-concrete px-4 py-1.5 text-sm text-night/80">
                     {step.detail}
