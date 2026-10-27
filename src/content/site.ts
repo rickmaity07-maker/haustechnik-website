@@ -24,7 +24,8 @@ export const nav = [
   { label: "Leistungen", href: "#leistungen" },
   { label: "Für wen", href: "#fuer-wen" },
   { label: "Ablauf", href: "#ablauf" },
-  { label: "Jahreskreis", href: "#jahreskreis" },
+  { label: "Preise", href: "#preise" },
+  { label: "FAQ", href: "#faq" },
   { label: "Kontakt", href: "#kontakt" },
 ] as const;
 

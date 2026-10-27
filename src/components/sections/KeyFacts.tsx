@@ -79,7 +79,8 @@ export function KeyFacts({ years }: { years: number }) {
                   }`}
                 >
                   {fact.prefix && <span className="text-[0.45em] tracking-normal text-night/55">{fact.prefix}</span>}
-                  <span className="kf-num" data-value={value}>
+                  {/* Limits like "unter 60 Min." stay static: counting up from 0 reads oddly. */}
+                  <span className={fact.prefix ? undefined : "kf-num"} data-value={value}>
                     {format(value)}
                   </span>
                   {fact.suffix && <span className="text-[0.45em] tracking-normal text-workblue">{fact.suffix}</span>}
