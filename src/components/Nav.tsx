@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { nav, site } from "@/content/site";
+import { Logo } from "./Logo";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -20,9 +21,8 @@ export function Nav() {
           aria-label="Hauptnavigation"
           className="flex w-full max-w-5xl items-center justify-between gap-6 rounded-full bg-night/75 py-2 pr-2 pl-5 text-white shadow-[0_20px_60px_-20px_rgba(15,27,45,0.5)] ring-1 ring-white/10 backdrop-blur-xl"
         >
-          <a href="#top" className="flex items-center gap-2.5 font-semibold tracking-tight">
-            <Logo />
-            <span>{site.name}</span>
+          <a href="#top" aria-label={`${site.name}, zum Seitenanfang`} className="flex items-center">
+            <Logo size="sm" variant="onDark" />
           </a>
 
           <ul className="hidden items-center gap-1 text-sm text-white/75 lg:flex">
@@ -93,14 +93,5 @@ export function Nav() {
         </a>
       </div>
     </>
-  );
-}
-
-function Logo() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden>
-      <path d="M3 12 13 4l10 8v10H3z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-      <rect x="10" y="14" width="6" height="8" fill="var(--signal)" />
-    </svg>
   );
 }

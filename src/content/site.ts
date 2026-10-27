@@ -29,43 +29,20 @@ export const nav = [
   { label: "Kontakt", href: "#kontakt" },
 ] as const;
 
+// Hero copy. Keep it short: headline up to 6 words, subline up to 12 words, three trust items.
+export const hero = {
+  headline: "Ihr Haus in guten Händen.",
+  subline: `Hausmeisterservice und Haustechnik für ${site.city} und Umgebung.`,
+  trust: [`Seit ${site.founded}`, "Fester Ansprechpartner", "Feste Termine"],
+} as const;
+
 // Hotspots on the hero building cross-section. x/y are SVG coordinates (viewBox 0 0 1200 560).
 export const hotspots = [
-  {
-    id: "dach",
-    x: 600,
-    y: 62,
-    title: "Dach & Dachrinne",
-    text: "Dachrinnen reinigen, Sichtkontrolle nach Sturm, Schneelast im Blick behalten.",
-  },
-  {
-    id: "wohnung",
-    x: 340,
-    y: 250,
-    title: "Wohnungen",
-    text: "Kleinreparaturen, tropfende Armaturen, klemmende Türen, Wohnungsübergaben beim Mieterwechsel.",
-  },
-  {
-    id: "treppenhaus",
-    x: 600,
-    y: 300,
-    title: "Treppenhaus",
-    text: "Reinigung, Beleuchtung, Rauchwarnmelder und Brandschutztüren regelmäßig prüfen.",
-  },
-  {
-    id: "heizung",
-    x: 845,
-    y: 470,
-    title: "Heizungskeller",
-    text: "Heizung und Warmwasser überwachen, Störungen beheben, Zählerstände ablesen.",
-  },
-  {
-    id: "aussen",
-    x: 1085,
-    y: 418,
-    title: "Außenanlage",
-    text: "Grünpflege, Mülltonnen-Service, Laub im Herbst und Winterdienst ab dem ersten Frost.",
-  },
+  { id: "dach", x: 600, y: 62, title: "Dach & Dachrinne", text: "Rinnen reinigen und nach jedem Sturm nachsehen." },
+  { id: "wohnung", x: 340, y: 250, title: "Wohnungen", text: "Kleinreparaturen und Übergaben beim Mieterwechsel." },
+  { id: "treppenhaus", x: 600, y: 300, title: "Treppenhaus", text: "Sauber, hell und mit geprüften Rauchmeldern." },
+  { id: "heizung", x: 845, y: 470, title: "Heizungskeller", text: "Heizung und Warmwasser im Blick, Störungen behoben." },
+  { id: "aussen", x: 1085, y: 418, title: "Außenanlage", text: "Grünpflege, Mülltonnen und Winterdienst." },
 ] as const;
 
 // Beispielwerte, vor Veröffentlichung anpassen
