@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { WrenchIcon } from "@phosphor-icons/react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { hotspots, site } from "@/content/site";
+import { hero, hotspots, site } from "@/content/site";
 import { ArrowButton } from "./ArrowButton";
+import { Logo } from "./Logo";
 
 const W = 1200;
 const H = 560;
@@ -16,8 +16,6 @@ const windows = floors.flatMap((y) => cols.map((x) => ({ x, y: y + 24 })));
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
-  const [active, setActive] = useState<string>("heizung");
-  const current = hotspots.find((h) => h.id === active) ?? hotspots[0];
 
   useGSAP(
     () => {
@@ -25,49 +23,22 @@ export function Hero() {
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.set(".hero-inner", { autoAlpha: 1 });
-        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-
-        tl.from(".hero-line > span", { yPercent: 110, duration: 1.2, stagger: 0.12 })
-          .from(".hero-pill", { scale: 0, rotate: -30, duration: 0.9, ease: "back.out(2)" }, "-=0.7")
-          .from(".hero-fade", { y: 24, autoAlpha: 0, duration: 1, stagger: 0.1 }, "-=0.6")
+        // A quiet fade and rise; the Intro owns the letter-by-letter brand moment.
+        gsap
+          .timeline({ defaults: { ease: "power4.out" } })
+          .from(".hero-rise", { y: 24, autoAlpha: 0, duration: 0.8, stagger: 0.08 })
           .fromTo(
             ".draw",
             { strokeDashoffset: 1 },
-            { strokeDashoffset: 0, duration: 1.8, stagger: 0.04, ease: "power2.inOut" },
-            "-=0.9",
+            { strokeDashoffset: 0, duration: 2.4, stagger: 0.01, ease: "power2.inOut" },
+            0.2,
           )
-          .to(".win-lit", { opacity: 1, duration: 0.25, stagger: { each: 0.05, from: "random" } }, "-=0.6")
-          .from(".hotspot", { scale: 0, autoAlpha: 0, duration: 0.6, stagger: 0.08, ease: "back.out(3)" }, "-=0.3");
-
-        // Windows switch on and off at random, like a lived-in house at dusk.
-        const flicker = gsap.delayedCall(3.5, function loop() {
-          const all = gsap.utils.toArray<SVGRectElement>(".win");
-          const pick = all[Math.floor(Math.random() * all.length)];
-          const lit = Number(gsap.getProperty(pick, "opacity")) > 0.5;
-          gsap.to(pick, { opacity: lit ? 0 : 1, duration: 0.4 });
-          flicker.restart(true);
-        });
-        gsap.delayedCall(0, () => flicker.restart(true));
-
-        gsap.to(".hero-building", {
-          yPercent: -8,
-          ease: "none",
-          scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
-        });
-        gsap.to(".hero-copy", {
-          autoAlpha: 0,
-          y: -60,
-          ease: "none",
-          scrollTrigger: { trigger: root.current, start: "top top", end: "45% top", scrub: true },
-        });
-
-        return () => flicker.kill();
+          .from(".win-lit", { opacity: 0, duration: 1.2, ease: "power2.out" }, "-=0.8")
+          .from(".hotspot", { autoAlpha: 0, duration: 0.8, stagger: 0.1 }, "-=0.6");
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
         gsap.set(".hero-inner", { autoAlpha: 1 });
-        gsap.set(".draw", { strokeDashoffset: 0 });
-        gsap.set(".win-lit", { opacity: 1 });
       });
     },
     { scope: root },
@@ -77,93 +48,97 @@ export function Hero() {
     <section
       id="top"
       ref={root}
-      className="relative isolate overflow-hidden bg-night pt-36 text-white md:pt-44"
+      className="relative isolate flex min-h-[100dvh] items-center overflow-hidden bg-night pt-28 pb-16 text-white md:pt-32 md:pb-20"
     >
       {/* ambient light */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute top-[-20%] left-1/2 h-[70vh] w-[80vw] -translate-x-1/2 rounded-full bg-workblue/50 blur-[120px]" />
-        <div className="absolute right-[5%] bottom-[10%] h-[30vh] w-[30vw] rounded-full bg-signal/15 blur-[120px]" />
+        <div className="absolute top-[10%] right-[-10%] h-[70vh] w-[60vw] rounded-full bg-workblue/45 blur-[120px]" />
+        <div className="absolute bottom-[5%] left-[-5%] h-[30vh] w-[30vw] rounded-full bg-signal/10 blur-[120px]" />
       </div>
 
-      <div className="hero-inner invisible">
-        <div className="hero-copy mx-auto flex max-w-6xl flex-col items-center px-4 text-center">
-          <h1 className="text-[clamp(2.6rem,6vw,5.75rem)] leading-[1.02] font-medium tracking-[-0.035em]">
-            <span className="hero-line block overflow-hidden pb-[0.08em]">
-              <span className="block">Wir kümmern uns um Ihr Haus.</span>
-            </span>
-            <span className="hero-line block overflow-hidden pb-[0.08em]">
-              <span className="block text-white/55">
-                Vom Heizungskeller
-                <span className="hero-pill mx-3 inline-flex h-[0.8em] w-[1.7em] translate-y-[-0.06em] items-center justify-center rounded-full bg-signal align-middle text-night">
-                  <WrenchIcon weight="light" className="size-[0.5em]" aria-hidden />
-                </span>
-                bis zur Dachrinne.
-              </span>
-            </span>
+      <div className="hero-inner invisible mx-auto grid w-full max-w-7xl items-center gap-14 px-4 md:px-8 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-5">
+          <Logo size="lg" variant="onDark" className="hero-rise" />
+
+          <h1 className="hero-rise mt-10 text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-medium tracking-[-0.035em] text-balance md:mt-12">
+            {hero.headline}
           </h1>
 
-          <p className="hero-fade mt-8 max-w-2xl text-lg leading-relaxed text-white/70 md:text-xl">
-            Hausmeisterservice und Haustechnik für Mehrfamilienhäuser, Wohnanlagen und Gewerbeobjekte in{" "}
-            {site.region}. Ein fester Ansprechpartner, feste Termine, saubere Dokumentation.
+          <p className="hero-rise mt-5 max-w-md text-lg leading-relaxed text-white/70 md:text-xl">
+            {hero.subline}
           </p>
 
-          <div className="hero-fade mt-10 flex flex-col items-center gap-3 sm:flex-row">
+          <div className="hero-rise mt-9 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <ArrowButton href="#kontakt">Angebot anfragen</ArrowButton>
             <a
               href={site.emergencyPhoneHref}
               className="inline-flex items-center gap-3 rounded-full px-6 py-4 text-base text-white/85 ring-1 ring-white/20 transition-colors duration-300 hover:bg-white/10"
             >
-              <span className="relative flex size-2.5">
-                <span className="absolute inset-0 animate-[ping-soft_2s_ease-out_infinite] rounded-full bg-signal" />
-                <span className="relative size-2.5 rounded-full bg-signal" />
-              </span>
+              <span aria-hidden className="size-2 rounded-full bg-signal" />
               24h Notdienst {site.emergencyPhone}
             </a>
           </div>
+
+          <ul className="hero-rise mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-steel">
+            {hero.trust.map((item, i) => (
+              <li key={item} className="flex items-center gap-4">
+                {i > 0 && <span aria-hidden className="size-1 rounded-full bg-white/25" />}
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Building cross-section */}
-        <div className="hero-building relative mx-auto mt-16 w-full max-w-6xl px-4 md:mt-20">
+        <div className="hero-building mx-auto w-full max-w-lg sm:max-w-xl lg:col-span-7 lg:max-w-none">
           <div className="relative">
             <Building />
-
-            {hotspots.map((h) => (
-              <button
-                key={h.id}
-                type="button"
-                onClick={() => setActive(h.id)}
-                onMouseEnter={() => setActive(h.id)}
-                aria-pressed={active === h.id}
-                aria-label={h.title}
-                style={{ left: `${(h.x / W) * 100}%`, top: `${(h.y / H) * 100}%` }}
-                className="hotspot absolute flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center md:size-11"
-              >
-                <span
-                  className={`absolute inset-1 rounded-full bg-signal ${active === h.id ? "" : "animate-[ping-soft_2.4s_ease-out_infinite]"}`}
-                />
-                <span
-                  className={`relative size-3.5 rounded-full ring-4 transition-all duration-500 ease-spring md:size-4 ${active === h.id ? "scale-125 bg-white ring-signal" : "bg-signal ring-night/60"}`}
-                />
-              </button>
-            ))}
-          </div>
-
-          <div className="relative z-10 mx-auto -mt-4 max-w-md px-2 pb-14 md:absolute md:top-6 md:left-8 md:mt-0 md:max-w-xs md:p-0">
-            <div className="rounded-[1.75rem] bg-white/5 p-1.5 ring-1 ring-white/10 backdrop-blur-md">
-              <div
-                key={current.id}
-                className="animate-[fadein_0.5s_cubic-bezier(0.32,0.72,0,1)] rounded-[calc(1.75rem-0.375rem)] bg-night/80 p-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
-                aria-live="polite"
-              >
-                <p className="text-sm text-signal">{current.title}</p>
-                <p className="mt-2 text-[15px] leading-relaxed text-white/80">{current.text}</p>
-              </div>
-            </div>
+            <Hotspots />
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+// Dots only; each label shows on hover, keyboard focus or tap.
+function Hotspots() {
+  const [open, setOpen] = useState<string | null>(null);
+
+  return hotspots.map((h) => {
+    const isOpen = open === h.id;
+    const below = h.y < 150;
+    const align = h.x < 450 ? "left-0" : h.x > 750 ? "right-0" : "left-1/2 -translate-x-1/2";
+
+    return (
+      <button
+        key={h.id}
+        type="button"
+        aria-label={h.title}
+        aria-describedby={`hotspot-${h.id}`}
+        onMouseEnter={() => setOpen(h.id)}
+        onMouseLeave={() => setOpen(null)}
+        onFocus={() => setOpen(h.id)}
+        onBlur={() => setOpen(null)}
+        onClick={() => setOpen(h.id)}
+        onKeyDown={(e) => e.key === "Escape" && setOpen(null)}
+        style={{ left: `${(h.x / W) * 100}%`, top: `${(h.y / H) * 100}%` }}
+        className={`hotspot absolute flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full ${isOpen ? "z-10" : ""}`}
+      >
+        <span
+          className={`size-3 rounded-full ring-4 transition-transform duration-500 ease-spring md:size-3.5 ${isOpen ? "scale-125 bg-white ring-signal" : "bg-signal ring-night/60"}`}
+        />
+        <span
+          id={`hotspot-${h.id}`}
+          role="tooltip"
+          className={`pointer-events-none absolute w-56 rounded-2xl bg-night/90 p-4 text-left shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] ring-1 ring-white/10 backdrop-blur-md transition-[opacity,translate] duration-300 ease-spring ${align} ${below ? "top-full mt-1" : "bottom-full mb-1"} ${isOpen ? "translate-y-0 opacity-100" : `${below ? "-translate-y-1" : "translate-y-1"} opacity-0`}`}
+        >
+          <span className="block text-sm text-signal">{h.title}</span>
+          <span className="mt-1 block text-sm leading-relaxed text-white/80">{h.text}</span>
+        </span>
+      </button>
+    );
+  });
 }
 
 function Building() {
@@ -209,17 +184,19 @@ function Building() {
       {windows.map((w, i) => (
         <g key={i}>
           <rect className="draw" x={w.x} y={w.y} width="50" height="58" rx="3" {...thin} />
-          <rect
-            className={`win ${i % 3 !== 1 ? "win-lit" : ""}`}
-            x={w.x + 3}
-            y={w.y + 3}
-            width="44"
-            height="52"
-            rx="2"
-            fill="var(--signal)"
-            opacity="0"
-            style={{ filter: "drop-shadow(0 0 14px rgba(255,200,61,0.55))" }}
-          />
+          {i % 3 !== 1 && (
+            <rect
+              className="win-lit"
+              x={w.x + 3}
+              y={w.y + 3}
+              width="44"
+              height="52"
+              rx="2"
+              fill="var(--signal)"
+              opacity="0.9"
+              style={{ filter: "drop-shadow(0 0 14px rgba(255,200,61,0.55))" }}
+            />
+          )}
         </g>
       ))}
     </svg>
