@@ -111,13 +111,13 @@ export function Contact() {
   }
 
   return (
-    <section id="kontakt" ref={root} className="bg-paper py-32 md:py-48">
+    <section id="kontakt" ref={root} className="bg-paper py-20 md:py-28">
       <style>{`
         @keyframes contact-draw { to { stroke-dashoffset: 0; } }
         @keyframes contact-pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
       `}</style>
 
-      <div className="mx-auto grid max-w-7xl gap-14 px-4 md:grid-cols-[1fr_1.15fr] md:gap-16 lg:gap-24">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 md:grid-cols-[1fr_1.15fr] md:gap-14 md:px-8 lg:gap-20">
         <div className="contact-reveal">
           <p className="text-sm font-medium text-workblue">Kontakt</p>
           <h2 className="mt-4 text-4xl leading-[1.05] font-medium tracking-[-0.03em] text-night md:text-6xl">
@@ -127,7 +127,7 @@ export function Contact() {
             Wir melden uns innerhalb eines Werktags und vereinbaren einen Termin für die kostenlose Objektbegehung.
           </p>
 
-          <dl className="mt-12 space-y-6">
+          <dl className="mt-10 space-y-5">
             <ContactRow Icon={PhoneIcon} label="Telefon">
               <a href={site.phoneHref} className={linkClass}>
                 {site.phone}

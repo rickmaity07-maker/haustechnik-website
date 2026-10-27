@@ -53,7 +53,7 @@ export function FAQ() {
   };
 
   return (
-    <section id="faq" ref={root} aria-labelledby="faq-title" className="bg-paper pb-32 text-night md:pb-48">
+    <section id="faq" ref={root} aria-labelledby="faq-title" className="bg-paper pb-20 text-night md:pb-28">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="max-w-3xl">
           <h2 id="faq-title" className="text-[clamp(2.2rem,4.6vw,4rem)] leading-[1.05] font-medium tracking-[-0.03em] text-balance">
@@ -68,7 +68,7 @@ export function FAQ() {
           </p>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-12 md:mt-20 md:grid-cols-12 md:gap-8">
+        <div className="mt-10 grid grid-cols-1 gap-10 md:mt-14 md:grid-cols-12 md:gap-8">
           <ol className="faq-list border-t border-night/10 md:col-span-5">
             {faq.map((item, i) => {
               const selected = i === active;
@@ -112,7 +112,7 @@ export function FAQ() {
               role="region"
               aria-live="polite"
               aria-labelledby={`faq-q-${active}`}
-              className="sticky top-32 rounded-[1.75rem] bg-concrete/70 p-1.5 ring-1 ring-night/5"
+              className="sticky top-28 rounded-[1.75rem] bg-concrete/70 p-1.5 ring-1 ring-night/5"
             >
               <div className="faq-answer rounded-[calc(1.75rem-0.375rem)] bg-white p-9 shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_1px_2px_rgba(15,27,45,0.04)] lg:p-12">
                 <p className="text-sm text-workblue tabular-nums">
