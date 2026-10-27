@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { hero, hotspots, site } from "@/content/site";
 import { ArrowButton } from "./ArrowButton";
@@ -13,9 +13,49 @@ const H = 560;
 const floors = [110, 215, 320];
 const cols = [228, 308, 388, 468, 682, 762, 842, 922];
 const windows = floors.flatMap((y) => cols.map((x) => ({ x, y: y + 24 })));
+const initialLights = windows.map((_, i) => i % 3 !== 1);
+
+// Lights the visitor can switch, plus an idle "people moving around" shuffle:
+// every few seconds one lit window goes dark and a dark one lights up.
+// Paused while the hero is off screen, the tab is hidden, after a click, and under reduced motion.
+function useLights(root: React.RefObject<HTMLElement | null>) {
+  const [lit, setLit] = useState(initialLights);
+  const lastTouch = useRef(0);
+
+  const toggle = useCallback((i: number) => {
+    lastTouch.current = Date.now();
+    setLit((prev) => prev.map((on, j) => (j === i ? !on : on)));
+  }, []);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let visible = true;
+    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
+    io.observe(el);
+    const id = window.setInterval(() => {
+      if (!visible || document.hidden || Date.now() - lastTouch.current < 6000) return;
+      setLit((prev) => {
+        const on = prev.flatMap((v, i) => (v ? [i] : []));
+        const off = prev.flatMap((v, i) => (v ? [] : [i]));
+        if (!on.length || !off.length) return prev;
+        const out = on[Math.floor(Math.random() * on.length)];
+        const into = off[Math.floor(Math.random() * off.length)];
+        return prev.map((v, i) => (i === out ? false : i === into ? true : v));
+      });
+    }, 2600);
+    return () => {
+      io.disconnect();
+      window.clearInterval(id);
+    };
+  }, [root]);
+
+  return { lit, toggle };
+}
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
+  const { lit, toggle } = useLights(root);
 
   useGSAP(
     () => {
@@ -33,7 +73,7 @@ export function Hero() {
             { strokeDashoffset: 0, duration: 2.4, stagger: 0.01, ease: "power2.inOut" },
             0.2,
           )
-          .from(".win-lit", { opacity: 0, duration: 1.2, ease: "power2.out" }, "-=0.8")
+          .from(".win-layer", { opacity: 0, duration: 1.2, ease: "power2.out" }, "-=0.8")
           .from(".hotspot", { autoAlpha: 0, duration: 0.8, stagger: 0.1 }, "-=0.6");
       });
 
@@ -92,9 +132,10 @@ export function Hero() {
         {/* Building cross-section */}
         <div className="hero-building mx-auto w-full max-w-lg sm:max-w-xl lg:col-span-7 lg:max-w-none">
           <div className="relative">
-            <Building />
+            <Building lit={lit} onToggle={toggle} />
             <Hotspots />
           </div>
+          <p className="hero-rise mt-3 text-center text-xs text-steel/80 lg:text-right">Tipp: Klicken Sie auf ein Fenster.</p>
         </div>
       </div>
     </section>
@@ -141,7 +182,7 @@ function Hotspots() {
   });
 }
 
-function Building() {
+function Building({ lit, onToggle }: { lit: boolean[]; onToggle: (i: number) => void }) {
   const line = { stroke: "rgba(255,255,255,0.55)", strokeWidth: 1.4, fill: "none", pathLength: 1, strokeDasharray: 1 };
   const thin = { ...line, stroke: "rgba(255,255,255,0.25)", strokeWidth: 1 };
 
@@ -181,24 +222,36 @@ function Building() {
       <rect className="draw" x="1120" y="400" width="26" height="30" rx="3" {...thin} />
       <rect className="draw" x="1150" y="400" width="26" height="30" rx="3" {...thin} />
 
-      {windows.map((w, i) => (
-        <g key={i}>
-          <rect className="draw" x={w.x} y={w.y} width="50" height="58" rx="3" {...thin} />
-          {i % 3 !== 1 && (
+      {/* Windows: click or tap to switch the light. Decorative, so pointer-only (no tab stops). */}
+      <g className="win-layer">
+        {windows.map((w, i) => (
+          <g key={i} className="group cursor-pointer" onClick={() => onToggle(i)} aria-hidden>
+            <rect x={w.x} y={w.y} width="50" height="58" rx="3" fill="rgba(255,255,255,0.03)" />
             <rect
-              className="win-lit"
               x={w.x + 3}
               y={w.y + 3}
               width="44"
               height="52"
               rx="2"
               fill="var(--signal)"
-              opacity="0.9"
-              style={{ filter: "drop-shadow(0 0 14px rgba(255,200,61,0.55))" }}
+              style={{
+                opacity: lit[i] ? 0.9 : 0,
+                filter: "drop-shadow(0 0 14px rgba(255,200,61,0.55))",
+                transition: "opacity 600ms cubic-bezier(.16,1,.3,1)",
+              }}
             />
-          )}
-        </g>
-      ))}
+            <rect
+              className="draw transition-[stroke] duration-300 group-hover:stroke-white"
+              x={w.x}
+              y={w.y}
+              width="50"
+              height="58"
+              rx="3"
+              {...thin}
+            />
+          </g>
+        ))}
+      </g>
     </svg>
   );
 }

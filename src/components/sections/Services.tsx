@@ -17,6 +17,7 @@ import {
   type Icon,
 } from "@phosphor-icons/react";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { PressureGauge } from "@/components/PressureGauge";
 import { site } from "@/content/site";
 
 type Item = { icon?: Icon; label: string };
@@ -43,6 +44,8 @@ const winter: Item[] = [{ label: "Räumen" }, { label: "Streuen" }, { label: "Ei
 // Shown at 4:3, at least 1200 px wide; next/image takes care of resizing.
 const PHOTO_EXT = "svg";
 const photo = (name: string) => `/images/leistungen-${name}.${PHOTO_EXT}`;
+// Section background. Swap for a photo: save public/images/leistungen-bg.jpg and change the extension.
+const BG = "/images/leistungen-bg.svg";
 
 export function Services() {
   const root = useRef<HTMLElement>(null);
@@ -66,7 +69,16 @@ export function Services() {
   );
 
   return (
-    <section id="leistungen" ref={root} className="bg-paper pt-20 pb-12 text-night md:pt-28 md:pb-16">
+    <section id="leistungen" ref={root} className="relative isolate overflow-hidden bg-paper pt-20 pb-12 text-night md:pt-28 md:pb-16">
+      {/* Background: blueprint drawing, faded towards the cards so text stays readable. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <Image src={BG} alt="" fill sizes="100vw" className="object-cover object-right-top" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_10%,rgba(246,247,244,0.85),transparent_55%)]" />
+        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-paper/90 to-transparent md:h-80" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-paper to-transparent" />
+        <div className="absolute top-[-10%] right-[-5%] h-[60%] w-[45%] rounded-full bg-workblue/10 blur-[120px]" />
+        <div className="absolute bottom-[10%] left-[-5%] h-[35%] w-[30%] rounded-full bg-signal/15 blur-[120px]" />
+      </div>
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-8">
           <h2 className="text-[clamp(2.2rem,4.6vw,4rem)] leading-[1.05] font-medium tracking-[-0.03em] text-balance lg:col-span-7">
@@ -82,12 +94,7 @@ export function Services() {
           {/* A: Haustechnik, horizontal: photo left, text and chips right */}
           <Card className="lg:col-span-7" dark>
             <div className="grid gap-5 md:grid-cols-[45%_1fr] md:gap-7">
-              <Photo
-                src={photo("haustechnik")}
-                alt="Heizungsrohre und Manometer im Technikraum eines Mehrfamilienhauses"
-                sizes="(min-width: 1024px) 320px, (min-width: 768px) 45vw, 100vw"
-                dark
-              />
+              <PressureGauge />
               <div className="flex flex-col px-3 pb-3 md:px-0 md:pt-3 md:pr-3">
                 <CardHead icon={WrenchIcon} title="Haustechnik" dark>
                   Wartung und kleine Reparaturen, bevor aus einem Tropfen ein Wasserschaden wird.

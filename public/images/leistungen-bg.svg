@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" fill="none">
+  <!-- Blueprint-style background for the Leistungen section. Replace with a photo by saving
+       public/images/leistungen-bg.jpg and changing BG in Services.tsx. -->
+  <defs>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0v40" stroke="#23407a" stroke-opacity=".07"/>
+    </pattern>
+    <pattern id="G" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M200 0H0v200" stroke="#23407a" stroke-opacity=".1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#g)"/>
+  <rect width="1600" height="1000" fill="url(#G)"/>
+
+  <g stroke="#23407a" stroke-opacity=".32" stroke-width="1.4">
+    <!-- facade elevation, right -->
+    <path d="M980 300 1250 170l270 130"/>
+    <path d="M970 300h560M990 300v520M1510 300v520M960 820h580"/>
+    <path d="M990 470h520M990 640h520" stroke-opacity=".2"/>
+    <path d="M1230 300v520M1270 300v520" stroke-opacity=".2"/>
+    <path d="M1225 820v-90h50v90"/>
+    <g stroke-opacity=".22">
+      <rect x="1030" y="340" width="56" height="80" rx="2"/><rect x="1120" y="340" width="56" height="80" rx="2"/>
+      <rect x="1320" y="340" width="56" height="80" rx="2"/><rect x="1410" y="340" width="56" height="80" rx="2"/>
+      <rect x="1030" y="510" width="56" height="80" rx="2"/><rect x="1120" y="510" width="56" height="80" rx="2"/>
+      <rect x="1320" y="510" width="56" height="80" rx="2"/><rect x="1410" y="510" width="56" height="80" rx="2"/>
+      <rect x="1030" y="680" width="56" height="80" rx="2"/><rect x="1120" y="680" width="56" height="80" rx="2"/>
+      <rect x="1320" y="680" width="56" height="80" rx="2"/><rect x="1410" y="680" width="56" height="80" rx="2"/>
+    </g>
+    <!-- dimension lines -->
+    <g stroke-opacity=".28" stroke-width="1">
+      <path d="M990 870h520M990 862v16M1510 862v16"/>
+      <path d="M1570 300v520M1562 300h16M1562 820h16"/>
+      <path d="M1562 470h16M1562 640h16"/>
+    </g>
+  </g>
+
+  <!-- floor plan fragment, bottom left -->
+  <g stroke="#23407a" stroke-opacity=".22" stroke-width="1.4">
+    <path d="M60 640h420v300H60z"/>
+    <path d="M260 640v140M260 830v110M60 790h120M230 790h250"/>
+    <path d="M180 790a50 50 0 0 1 50-50" stroke-opacity=".18"/>
+    <path d="M480 700h-40M480 760h-40" stroke-opacity=".18"/>
+    <circle cx="380" cy="880" r="22" stroke-opacity=".16"/>
+  </g>
+
+  <!-- pipe run, top left -->
+  <g stroke="#23407a" stroke-opacity=".2" stroke-width="6" stroke-linecap="round">
+    <path d="M-10 120h260a40 40 0 0 1 40 40v120"/>
+    <path d="M-10 160h200a40 40 0 0 1 40 40v80" stroke-opacity=".14"/>
+  </g>
+  <circle cx="290" cy="300" r="26" stroke="#23407a" stroke-opacity=".22" stroke-width="2"/>
+  <path d="M290 300l12-14" stroke="#ffc83d" stroke-opacity=".7" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

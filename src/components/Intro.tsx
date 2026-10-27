@@ -1,21 +1,34 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 
 const SEEN_KEY = "intro-seen";
 const PLAY_STYLE_ID = "intro-play";
+const ease = "cubic-bezier(.16,1,.3,1)";
+const easeInOut = "cubic-bezier(.76,0,.24,1)";
 
-// Runs while the HTML is parsed, before first paint. The overlay is display:none by default
-// (so it never shows without JavaScript); on a first visit without reduced motion this
-// unhides it via a style tag in <head>, so repeat visitors never see a flash of it.
-// The CSS animation is a safety net: if the script bundle never loads, the overlay still
-// slides away on its own instead of covering the page.
-const playCss =
-  "#intro{display:flex;animation:intro-fallback .6s cubic-bezier(.76,0,.24,1) 4s forwards}" +
-  "@keyframes intro-fallback{to{transform:translateY(-100%);visibility:hidden}}";
-const bootScript = `try{if(!sessionStorage.getItem("${SEEN_KEY}")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){var s=document.createElement("style");s.id="${PLAY_STYLE_ID}";s.textContent=${JSON.stringify(playCss)};document.head.appendChild(s)}}catch(e){}`;
+// The whole sequence is CSS, injected before first paint by the boot script below, so it
+// plays even while JavaScript is still loading (slow phones, dev mode). JavaScript only adds
+// skipping and removes the overlay at the end. Total: about 2.4 s.
+const playCss = [
+  `#intro{display:flex;animation:intro-exit .7s ${easeInOut} 2.1s forwards}`,
+  `#intro.intro-skip{animation:intro-exit .5s ${easeInOut} 0s forwards}`,
+  `#intro .intro-roof{animation:intro-draw .8s ${ease} .1s forwards}`,
+  `#intro .intro-wrench{animation:intro-pop .5s ${ease} .55s forwards}`,
+  `#intro .intro-letter{animation:intro-rise .8s ${ease} forwards;animation-delay:calc(.45s + var(--i) * 45ms)}`,
+  `#intro .intro-tagline{animation:intro-up .6s ${ease} 1s forwards}`,
+  `#intro .intro-line{animation:intro-grow .9s ${easeInOut} 1.05s forwards}`,
+  "@keyframes intro-draw{to{stroke-dashoffset:0}}",
+  "@keyframes intro-pop{to{opacity:1;transform:none}}",
+  "@keyframes intro-rise{to{transform:none}}",
+  "@keyframes intro-up{to{opacity:1;transform:none}}",
+  "@keyframes intro-grow{to{transform:none}}",
+  "@keyframes intro-exit{to{transform:translateY(-100%);visibility:hidden}}",
+].join("");
+
+// Add ?intro to the URL to replay it (handy while reviewing; normally it plays once per tab).
+const bootScript = `try{if((!sessionStorage.getItem("${SEEN_KEY}")||/[?&]intro\\b/.test(location.search))&&!matchMedia("(prefers-reduced-motion: reduce)").matches){sessionStorage.setItem("${SEEN_KEY}","1");var s=document.createElement("style");s.id="${PLAY_STYLE_ID}";s.textContent=${JSON.stringify(playCss)};document.head.appendChild(s)}}catch(e){}`;
 
 const letters = Array.from(site.name);
 
@@ -23,61 +36,31 @@ export function Intro() {
   const root = useRef<HTMLDivElement>(null);
   const [done, setDone] = useState(false);
 
-  useGSAP(
-    () => {
-      const finish = () => {
-        document.getElementById(PLAY_STYLE_ID)?.remove();
-        setDone(true);
-      };
-
-      // Late hydration: the CSS fallback is already sliding the overlay away, so let it finish.
-      if (!document.getElementById(PLAY_STYLE_ID) || performance.now() > 3500) {
-        finish();
-        return;
-      }
-
-      const mm = gsap.matchMedia();
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        try {
-          sessionStorage.setItem(SEEN_KEY, "1");
-        } catch {
-          // Private mode or blocked storage: the intro simply plays again next time.
-        }
-
-        // GSAP takes over from the CSS fallback. Start states live in the markup, so nothing flashes.
-        gsap.set(root.current, { animation: "none" });
-        const tl = gsap.timeline({ defaults: { ease: "expo.out" }, onComplete: finish });
-        tl.fromTo(".intro-roof", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.6, ease: "power4.out" })
-          .fromTo(".intro-door", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power4.out" }, 0.35)
-          .fromTo(".intro-letter", { yPercent: 110 }, { yPercent: 0, duration: 0.7, stagger: 0.035 }, 0.2)
-          .fromTo(".intro-tagline", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: "power4.out" }, 0.65)
-          .fromTo(".intro-line", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power4.inOut" }, 0.7)
-          .addLabel("exit", 1.2)
-          .to(root.current, { yPercent: -100, duration: 0.6, ease: "power4.inOut" }, "exit");
-
-        // Click, Escape or Enter jumps straight to the exit slide.
-        const skip = () => {
-          if (tl.time() < tl.labels.exit) tl.seek("exit");
-        };
-        const onKey = (e: KeyboardEvent) => {
-          if (e.key === "Escape" || e.key === "Enter") skip();
-        };
-        const el = root.current;
-        el?.addEventListener("click", skip);
-        window.addEventListener("keydown", onKey);
-
-        return () => {
-          el?.removeEventListener("click", skip);
-          window.removeEventListener("keydown", onKey);
-        };
-      });
-
-      // The boot script already checks this, but the setting can change before hydration.
-      mm.add("(prefers-reduced-motion: reduce)", finish);
-    },
-    { scope: root },
-  );
+  useEffect(() => {
+    const el = root.current;
+    // Repeat visit or reduced motion: the boot script never unhid the overlay.
+    if (!el || !document.getElementById(PLAY_STYLE_ID)) {
+      setDone(true);
+      return;
+    }
+    const finish = (e: AnimationEvent) => {
+      if (e.target !== el || e.animationName !== "intro-exit") return;
+      document.getElementById(PLAY_STYLE_ID)?.remove();
+      setDone(true);
+    };
+    const skip = () => el.classList.add("intro-skip");
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" || e.key === "Enter") skip();
+    };
+    el.addEventListener("animationend", finish);
+    el.addEventListener("click", skip);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      el.removeEventListener("animationend", finish);
+      el.removeEventListener("click", skip);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, []);
 
   if (done) return null;
 
@@ -89,39 +72,46 @@ export function Intro() {
       className="fixed inset-0 z-[65] hidden cursor-pointer flex-col items-center justify-center bg-night px-4 text-white"
     >
       <script dangerouslySetInnerHTML={{ __html: bootScript }} />
-      <svg width="56" height="56" viewBox="0 0 26 26" fill="none" className="text-white/80">
+      {/* Same mark as Logo.tsx: the house draws itself, then the wrench drops in. */}
+      <svg viewBox="0 0 32 32" fill="none" className="size-16 md:size-20" aria-hidden>
         <path
           className="intro-roof"
-          d="M3 12 13 4l10 8v10H3z"
-          stroke="currentColor"
-          strokeWidth="1.2"
+          d="M5 15.5 16 6l11 9.5V27H5z"
+          stroke="var(--paper)"
+          strokeWidth="1.6"
           strokeLinejoin="round"
           pathLength={1}
           strokeDasharray={1}
           strokeDashoffset={1}
         />
-        <rect
-          className="intro-door"
-          x="10"
-          y="14"
-          width="6"
-          height="8"
+        <path
+          className="intro-wrench"
+          style={{ opacity: 0, transform: "translateY(-4px) scale(.8)", transformOrigin: "16px 18px" }}
+          d="M19.2 13.4a3.2 3.2 0 0 0-4 4l-4 4a1.3 1.3 0 0 0 1.9 1.9l4-4a3.2 3.2 0 0 0 4-4l-1.9 1.9-1.6-.3-.3-1.6z"
           fill="var(--signal)"
-          opacity={0}
         />
       </svg>
 
       {/* Each letter rises out of a clip mask; the bottom padding keeps descenders inside it. */}
-      <p className="mt-8 flex overflow-hidden pb-[0.08em] text-[clamp(3rem,11vw,8rem)] leading-none font-medium tracking-[-0.045em]">
+      <p className="mt-7 flex overflow-hidden pb-[0.1em] text-[clamp(3.25rem,12vw,9rem)] leading-none font-semibold tracking-[-0.045em]">
         {letters.map((char, i) => (
-          <span key={i} className="intro-letter inline-block [transform:translateY(110%)]">
+          <span
+            key={i}
+            className="intro-letter inline-block"
+            style={{ transform: "translateY(110%)", ["--i" as string]: i }}
+          >
             {char}
           </span>
         ))}
       </p>
-      <p className="intro-tagline mt-5 [transform:translateY(0.75rem)] text-base text-white/60 opacity-0 md:text-lg">{site.tagline}</p>
-      <span className="mt-8 block h-px w-40 overflow-hidden bg-white/10 md:w-56">
-        <span className="intro-line block h-full w-full origin-left [transform:scaleX(0)] bg-signal" />
+      <p
+        className="intro-tagline mt-5 text-base text-white/65 md:text-lg"
+        style={{ opacity: 0, transform: "translateY(0.75rem)" }}
+      >
+        {site.tagline} · {site.region}
+      </p>
+      <span className="mt-9 block h-px w-40 overflow-hidden bg-white/10 md:w-64">
+        <span className="intro-line block h-full w-full origin-left bg-signal" style={{ transform: "scaleX(0)" }} />
       </span>
     </div>
   );
