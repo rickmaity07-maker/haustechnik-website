@@ -1,10 +1,13 @@
 "use client";
 
 import { useRef } from "react";
-import { CheckIcon } from "@phosphor-icons/react";
+import { CheckIcon, MapPinIcon } from "@phosphor-icons/react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { ArrowButton } from "@/components/ArrowButton";
 import { pricing } from "@/content/site";
+
+// Shared terms, matching the contract answers in the FAQ.
+const allPackages = ["12 Monate Mindestlaufzeit", "danach jährlich kündbar", "Protokoll nach jedem Einsatz"];
 
 export function Pricing() {
   const root = useRef<HTMLElement>(null);
@@ -28,19 +31,28 @@ export function Pricing() {
   );
 
   return (
-    <section id="preise" ref={root} className="bg-concrete py-32 text-night md:py-48">
+    <section id="preise" ref={root} className="bg-concrete py-20 text-night md:py-28">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <div className="max-w-3xl">
-          <h2 className="text-[clamp(2.2rem,4.6vw,4rem)] leading-[1.05] font-medium tracking-[-0.03em] text-balance">
+        {/* One header row on desktop, so the cards start high enough to be seen together with the heading */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:items-end md:gap-8">
+          <h2 className="text-[clamp(2.2rem,4.2vw,3.75rem)] leading-[1.05] font-medium tracking-[-0.03em] text-balance md:col-span-7">
             Feste Pauschalen statt Stundenzettel
           </h2>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-night/65">
-            Sie wissen vorher, was die Betreuung kostet. Abgerechnet wird monatlich {pricing.unit}, ohne versteckte
-            Anfahrts- oder Materialpauschalen.
-          </p>
+          <div className="md:col-span-5">
+            <p className="text-lg leading-relaxed text-night/65">
+              Sie wissen vorher, was die Betreuung kostet. Abgerechnet wird monatlich {pricing.unit}, ohne versteckte
+              Anfahrts- oder Materialpauschalen.
+            </p>
+            <p className="mt-4 inline-flex items-center gap-2.5 rounded-full bg-white/70 py-1.5 pr-4 pl-1.5 text-sm text-night/80 ring-1 ring-night/10">
+              <span className="flex size-6 items-center justify-center rounded-full bg-night text-signal">
+                <MapPinIcon size={13} weight="fill" aria-hidden />
+              </span>
+              Vorab: kostenlose Objektbegehung vor Ort
+            </p>
+          </div>
         </div>
 
-        <div className="pr-grid mt-16 grid grid-cols-1 gap-4 md:mt-20 md:grid-cols-3">
+        <div className="pr-grid mt-10 grid grid-cols-1 gap-4 md:mt-14 md:grid-cols-3">
           {pricing.packages.map((pkg) => {
             const hi = pkg.recommended;
             return (
@@ -64,7 +76,7 @@ export function Pricing() {
                     {pkg.description}
                   </p>
 
-                  <p className="mt-8 flex items-baseline gap-2">
+                  <p className="mt-6 flex items-baseline gap-2">
                     <span className={`text-base ${hi ? "text-white/60" : "text-night/55"}`}>ab</span>
                     <span className="text-5xl font-medium tracking-[-0.04em] tabular-nums">{pkg.price} €</span>
                   </p>
@@ -72,7 +84,7 @@ export function Pricing() {
                     {pricing.unit}, {pricing.vatNote}
                   </p>
 
-                  <ul className={`mt-8 space-y-3 border-t pt-8 ${hi ? "border-white/10" : "border-night/10"}`}>
+                  <ul className={`mt-6 space-y-3 border-t pt-6 ${hi ? "border-white/10" : "border-night/10"}`}>
                     {pkg.items.map((item) => (
                       <li key={item} className={`flex gap-3 text-[15px] ${hi ? "text-white/85" : "text-night/80"}`}>
                         <CheckIcon
@@ -87,7 +99,7 @@ export function Pricing() {
                   </ul>
 
                   {/* mt-auto pins the button to the bottom so all three line up */}
-                  <div className="mt-auto pt-10">
+                  <div className="mt-auto pt-8">
                     <ArrowButton href="#kontakt" variant={hi ? "signal" : "dark"}>
                       Begehung anfragen
                     </ArrowButton>
@@ -98,7 +110,16 @@ export function Pricing() {
           })}
         </div>
 
-        <p className="mt-10 max-w-2xl text-[15px] leading-relaxed text-night/60">
+        <ul className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-[15px] text-night/75">
+          <li className="font-medium text-night">Alle Pakete:</li>
+          {allPackages.map((item, i) => (
+            <li key={item} className="inline-flex items-center gap-3">
+              {i > 0 && <span aria-hidden className="size-1 rounded-full bg-night/30" />}
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-night/55">
           Die Preise sind Richtwerte. Den endgültigen Preis nennen wir Ihnen nach der kostenlosen Objektbegehung, wenn wir
           Größe, Außenflächen und Technik Ihres Hauses kennen.
         </p>

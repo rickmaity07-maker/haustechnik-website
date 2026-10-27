@@ -38,8 +38,8 @@ export function ServiceArea() {
   );
 
   return (
-    <section ref={root} aria-labelledby="sa-title" className="bg-paper py-32 text-night md:py-48">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-4 md:grid-cols-2 md:gap-12 md:px-8">
+    <section ref={root} aria-labelledby="sa-title" className="bg-paper py-20 text-night md:py-28">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 md:grid-cols-2 md:gap-14 md:px-8">
         <div className="sa-map relative mx-auto w-full max-w-md md:max-w-none">
           <svg viewBox="0 0 400 400" className="block h-auto w-full" role="img" aria-label={`Stilisierte Karte des Einsatzgebiets rund um ${site.city}`}>
             <rect width="400" height="400" rx="28" fill="var(--concrete)" />
@@ -92,7 +92,7 @@ export function ServiceArea() {
           </h2>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-night/65">{areas.radius}</p>
 
-          <ul className="sa-list mt-10 grid grid-cols-1 border-t border-night/10 sm:grid-cols-2 sm:gap-x-8">
+          <ul className="sa-list mt-8 grid grid-cols-1 border-t border-night/10 sm:grid-cols-2 sm:gap-x-8">
             {areas.list.map((a) => (
               <li key={a.name} className="sa-item flex items-center gap-3 border-b border-night/10 py-3.5 text-[15px] text-night/80">
                 <MapPinIcon size={18} weight="light" className="shrink-0 text-workblue" aria-hidden />

@@ -20,13 +20,13 @@ export function Footer() {
       </div>
 
       {/* Closing call to action */}
-      <div className="mx-auto max-w-7xl px-4 pt-32 pb-24 md:pt-48 md:pb-32">
+      <div className="mx-auto max-w-7xl px-4 pt-20 pb-16 md:px-8 md:pt-28 md:pb-20">
         <h2 className="max-w-5xl text-[clamp(3rem,9vw,8.5rem)] leading-[0.95] font-medium tracking-[-0.045em]">
           Ihr Haus.
           <br />
           <span className="text-white/50">Unsere Sorge.</span>
         </h2>
-        <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
           <ArrowButton href="#kontakt">Angebot anfragen</ArrowButton>
           <a
             href={site.phoneHref}
@@ -39,8 +39,8 @@ export function Footer() {
       </div>
 
       {/* Footer row */}
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="flex flex-col gap-10 border-t border-white/10 py-10 md:flex-row md:items-start md:justify-between">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <div className="flex flex-col gap-8 border-t border-white/10 py-10 md:flex-row md:items-start md:justify-between">
           <div>
             <Link href="/#top" className="inline-flex items-center gap-2.5 rounded-full text-lg font-semibold tracking-tight transition-[opacity,scale] duration-300 hover:opacity-80 active:scale-[0.98]">
               <Logo />
