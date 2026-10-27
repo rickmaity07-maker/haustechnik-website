@@ -5,6 +5,7 @@ import { ChatCircleTextIcon, FileTextIcon, HandshakeIcon, MapPinIcon } from "@ph
 import { gsap, useGSAP } from "@/lib/gsap";
 import { site } from "@/content/site";
 
+import { SectionBackdrop } from "@/components/SectionBackdrop";
 const steps = [
   {
     title: "Anfrage",
@@ -106,7 +107,8 @@ export function Process() {
   );
 
   return (
-    <section id="ablauf" ref={root} className="bg-concrete py-20 md:py-28">
+    <section id="ablauf" ref={root} className="relative isolate bg-concrete py-20 md:py-28">
+      <SectionBackdrop variant="route" />
       <div className="process-grid mx-auto grid max-w-7xl gap-10 px-4 md:grid-cols-[0.8fr_1.6fr] md:gap-14 md:px-8 lg:gap-20">
         <div className="process-left self-start">
           <p className="text-sm font-medium text-workblue">Ablauf</p>

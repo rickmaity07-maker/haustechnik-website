@@ -6,6 +6,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { ArrowButton } from "@/components/ArrowButton";
 import { pricing } from "@/content/site";
 
+import { SectionBackdrop } from "@/components/SectionBackdrop";
 // Shared terms, matching the contract answers in the FAQ.
 const allPackages = ["12 Monate Mindestlaufzeit", "danach jährlich kündbar", "Protokoll nach jedem Einsatz"];
 
@@ -31,7 +32,8 @@ export function Pricing() {
   );
 
   return (
-    <section id="preise" ref={root} className="bg-concrete py-20 text-night md:py-28">
+    <section id="preise" ref={root} className="relative isolate bg-concrete py-20 text-night md:py-28">
+      <SectionBackdrop variant="sheet" />
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         {/* One header row on desktop, so the cards start high enough to be seen together with the heading */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:items-end md:gap-8">

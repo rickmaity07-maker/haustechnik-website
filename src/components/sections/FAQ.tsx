@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { faq, site } from "@/content/site";
 
+import { SectionBackdrop } from "@/components/SectionBackdrop";
 export function FAQ() {
   const root = useRef<HTMLElement>(null);
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
@@ -53,7 +54,8 @@ export function FAQ() {
   };
 
   return (
-    <section id="faq" ref={root} aria-labelledby="faq-title" className="bg-paper pb-20 text-night md:pb-28">
+    <section id="faq" ref={root} aria-labelledby="faq-title" className="relative isolate bg-paper pb-20 text-night md:pb-28">
+      <SectionBackdrop variant="blueprint" />
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="max-w-3xl">
           <h2 id="faq-title" className="text-[clamp(2.2rem,4.6vw,4rem)] leading-[1.05] font-medium tracking-[-0.03em] text-balance">

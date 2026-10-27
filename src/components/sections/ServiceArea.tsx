@@ -5,6 +5,7 @@ import { MapPinIcon } from "@phosphor-icons/react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { areas, site } from "@/content/site";
 
+import { SectionBackdrop } from "@/components/SectionBackdrop";
 export function ServiceArea() {
   const root = useRef<HTMLElement>(null);
 
@@ -38,7 +39,8 @@ export function ServiceArea() {
   );
 
   return (
-    <section id="einsatzgebiet" ref={root} aria-labelledby="sa-title" className="bg-paper py-20 text-night md:py-28">
+    <section id="einsatzgebiet" ref={root} aria-labelledby="sa-title" className="relative isolate bg-paper py-20 text-night md:py-28">
+      <SectionBackdrop variant="contours" />
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 md:grid-cols-2 md:gap-14 md:px-8">
         <div className="sa-map relative mx-auto w-full max-w-md md:max-w-none">
           <svg viewBox="0 0 400 400" className="block h-auto w-full" role="img" aria-label={`Stilisierte Karte des Einsatzgebiets rund um ${site.city}`}>

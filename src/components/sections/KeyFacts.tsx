@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { facts, site } from "@/content/site";
 
+import { SectionBackdrop } from "@/components/SectionBackdrop";
 const format = (n: number) => n.toLocaleString("de-DE");
 
 // years is computed on the server (cached clock), so this component never reads Date itself.
@@ -60,7 +61,8 @@ export function KeyFacts({ years }: { years: number }) {
   );
 
   return (
-    <section ref={root} aria-labelledby="kf-title" className="bg-paper py-12 text-night md:py-14">
+    <section ref={root} aria-labelledby="kf-title" className="relative isolate bg-paper py-12 text-night md:py-14">
+      <SectionBackdrop variant="dots" />
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="flex items-center gap-5">
           <h2 id="kf-title" className="shrink-0 text-base font-medium text-night/70">

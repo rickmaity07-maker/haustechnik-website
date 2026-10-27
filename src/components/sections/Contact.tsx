@@ -6,6 +6,7 @@ import { ClockIcon, EnvelopeSimpleIcon, MapPinIcon, PhoneIcon, SirenIcon, type I
 import { gsap, useGSAP } from "@/lib/gsap";
 import { site } from "@/content/site";
 
+import { SectionBackdrop } from "@/components/SectionBackdrop";
 const objectTypes = ["Mehrfamilienhaus", "Wohnanlage", "Gewerbeobjekt", "Einfamilienhaus"] as const;
 const services = ["Hausmeisterservice", "Haustechnik", "Grünpflege", "Winterdienst", "Reinigung"] as const;
 
@@ -111,7 +112,8 @@ export function Contact() {
   }
 
   return (
-    <section id="kontakt" ref={root} className="bg-paper py-20 md:py-28">
+    <section id="kontakt" ref={root} className="relative isolate bg-paper py-20 md:py-28">
+      <SectionBackdrop variant="contours" />
       <style>{`
         @keyframes contact-draw { to { stroke-dashoffset: 0; } }
         @keyframes contact-pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }

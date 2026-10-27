@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ChatCircleDotsIcon, ClockIcon, EnvelopeSimpleIcon, PhoneIcon, SirenIcon } from "@phosphor-icons/react/dist/ssr";
 import { contactPerson, site } from "@/content/site";
 
+import { SectionBackdrop } from "@/components/SectionBackdrop";
 // The bundled placeholder gets initials and a note on top; a real photo is shown as it is.
 const isPlaceholder = contactPerson.image.endsWith("ansprechpartner.svg");
 
@@ -16,7 +17,8 @@ const factLink = "underline decoration-white/25 underline-offset-4 transition-co
 
 export function ContactPerson() {
   return (
-    <section aria-labelledby="cp-title" className="bg-paper py-16 text-white md:py-24">
+    <section aria-labelledby="cp-title" className="relative isolate bg-paper py-16 text-white md:py-24">
+      <SectionBackdrop variant="glow" />
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="rounded-[2rem] bg-night/5 p-1.5 ring-1 ring-night/10">
           <div className="relative isolate grid grid-cols-1 gap-8 overflow-hidden rounded-[calc(2rem-0.375rem)] bg-night p-4 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] sm:p-6 md:grid-cols-12 md:items-center md:gap-10 md:p-8 lg:gap-14 lg:p-10">

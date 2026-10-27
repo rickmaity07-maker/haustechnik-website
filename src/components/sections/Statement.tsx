@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 
+import { SectionBackdrop } from "@/components/SectionBackdrop";
 const text =
   "Ein Haus funktioniert, wenn niemand darüber nachdenken muss. Dafür sind wir da: feste Ansprechpartner, feste Rundgänge und ein Protokoll nach jedem Einsatz.";
 const words = text.split(" ");
@@ -36,7 +37,8 @@ export function Statement() {
   );
 
   return (
-    <section ref={root} aria-label="Unser Anspruch" className="bg-paper pt-12 pb-20 md:pt-16 md:pb-28">
+    <section ref={root} aria-label="Unser Anspruch" className="relative isolate bg-paper pt-12 pb-20 md:pt-16 md:pb-28">
+      <SectionBackdrop variant="house" />
       <div className="mx-auto max-w-7xl px-4">
         {/* Hairlines and a single house mark frame the paragraph as a pause between two paper sections. */}
         <div aria-hidden className="mx-auto mb-10 flex max-w-5xl items-center gap-5 md:mb-14">
