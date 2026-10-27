@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "Bash(npm run build)",
+      "Bash(npm run lint)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git log*)",
+      "Bash(git rev-parse*)",
+      "Bash(git branch*)",
+      "Bash(mempalace *)",
+      "Bash(rtk *)",
+      "mcp__mempalace"
+    ]
+  }
+}
