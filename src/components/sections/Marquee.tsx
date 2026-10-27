@@ -54,7 +54,7 @@ function Row({ outlined, hidden }: { outlined?: boolean; hidden?: boolean }) {
 
 export function Marquee() {
   return (
-    <section aria-label="Unsere Leistungen im Überblick" className="relative overflow-hidden border-t border-white/10 bg-night py-10 md:py-14">
+    <section aria-label="Unsere Leistungen im Überblick" className="relative overflow-hidden border-t border-white/10 bg-night py-8 md:py-12">
       <div className="group flex flex-col gap-3 text-4xl font-light tracking-[-0.02em] whitespace-nowrap md:gap-5 md:text-6xl">
         <div className="flex w-max animate-[marquee_48s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
           <Row />

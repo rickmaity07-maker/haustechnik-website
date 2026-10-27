@@ -1,3 +1,4 @@
+import { Intro } from "@/components/Intro";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { MobileCallBar } from "@/components/MobileCallBar";
@@ -26,6 +27,7 @@ export default function Home() {
   return (
     // Bottom padding on mobile keeps the fixed call bar clear of the last content.
     <div className="bg-night pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-0">
+      <Intro />
       <Nav />
       <main id="inhalt" className="w-full max-w-full overflow-x-clip">
         <Hero />
