@@ -60,7 +60,7 @@ export function KeyFacts({ years }: { years: number }) {
   );
 
   return (
-    <section ref={root} aria-labelledby="kf-title" className="bg-paper py-14 text-night md:py-20">
+    <section ref={root} aria-labelledby="kf-title" className="bg-paper py-12 text-night md:py-14">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="flex items-center gap-5">
           <h2 id="kf-title" className="shrink-0 text-base font-medium text-night/70">

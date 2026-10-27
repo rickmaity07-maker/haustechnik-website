@@ -24,7 +24,7 @@ export function ArrowButton({ href, children, variant = "signal", className = ""
   return (
     <a
       href={href}
-      className={`group inline-flex items-center gap-3 rounded-full py-2 pr-2 pl-6 text-base font-medium transition-transform duration-500 ease-spring active:scale-[0.97] ${styles[variant]} ${className}`}
+      className={`group inline-flex shrink-0 items-center gap-3 rounded-full whitespace-nowrap py-2 pr-2 pl-6 text-base font-medium transition-transform duration-500 ease-spring active:scale-[0.97] ${styles[variant]} ${className}`}
     >
       <span>{children}</span>
       <span

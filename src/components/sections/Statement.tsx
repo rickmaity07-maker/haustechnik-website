@@ -36,7 +36,7 @@ export function Statement() {
   );
 
   return (
-    <section ref={root} aria-label="Unser Anspruch" className="bg-paper py-20 md:py-28">
+    <section ref={root} aria-label="Unser Anspruch" className="bg-paper pt-12 pb-20 md:pt-16 md:pb-28">
       <div className="mx-auto max-w-7xl px-4">
         {/* Hairlines and a single house mark frame the paragraph as a pause between two paper sections. */}
         <div aria-hidden className="mx-auto mb-10 flex max-w-5xl items-center gap-5 md:mb-14">

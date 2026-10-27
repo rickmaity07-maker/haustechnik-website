@@ -66,7 +66,7 @@ export function Services() {
   );
 
   return (
-    <section id="leistungen" ref={root} className="bg-paper py-20 text-night md:py-28">
+    <section id="leistungen" ref={root} className="bg-paper pt-20 pb-12 text-night md:pt-28 md:pb-16">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-8">
           <h2 className="text-[clamp(2.2rem,4.6vw,4rem)] leading-[1.05] font-medium tracking-[-0.03em] text-balance lg:col-span-7">

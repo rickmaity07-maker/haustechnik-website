@@ -68,11 +68,11 @@ export function Hero() {
             {hero.subline}
           </p>
 
-          <div className="hero-rise mt-9 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <div className="hero-rise mt-9 flex flex-col flex-wrap items-start gap-3 sm:flex-row sm:items-center">
             <ArrowButton href="#kontakt">Angebot anfragen</ArrowButton>
             <a
               href={site.emergencyPhoneHref}
-              className="inline-flex items-center gap-3 rounded-full px-6 py-4 text-base text-white/85 ring-1 ring-white/20 transition-colors duration-300 hover:bg-white/10"
+              className="inline-flex shrink-0 items-center gap-3 rounded-full px-6 py-4 whitespace-nowrap text-base text-white/85 ring-1 ring-white/20 transition-colors duration-300 hover:bg-white/10"
             >
               <span aria-hidden className="size-2 rounded-full bg-signal" />
               24h Notdienst {site.emergencyPhone}
